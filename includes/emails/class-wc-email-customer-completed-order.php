@@ -65,9 +65,10 @@ if ( ! class_exists( 'WC_Email_Customer_Completed_Order', false ) ) :
 				$this->placeholders['{order_number}'] = $this->object->get_order_number();
 			}
 
-			if ( $this->is_enabled() && $this->get_recipient() ) {
-				$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
-			}
+		if ( $this->is_enabled() && $this->get_recipient() ) {
+			$result = (  $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() ) ) ? TRUE : FALSE;
+			do_action('woocommerce_email_trigger_customer_completed_order', $result, $this);
+		}
 
 			$this->restore_locale();
 		}
